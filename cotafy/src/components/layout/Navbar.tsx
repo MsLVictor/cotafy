@@ -1,14 +1,13 @@
 import { AppBar, Box, Button, Container, Toolbar } from "@mui/material";
 import { navLinks } from "./navLinks";
 import { NavLink } from "react-router-dom";
+import Logo from "./Logo";
 function Navbar() {
     return (
         <AppBar position="sticky" color="transparent" elevation={0} sx={{ bgcolor: 'rgba(11, 18, 32, 0.92)', borderBottom: 1, borderColor: 'divider' }}>
             <Container maxWidth="lg">
                 <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ fontWeight: 800, fontSize: 22 }}>
-                        Cota<Box component="span" sx={{ color: 'primary.main' }}>fy</Box>
-                    </Box>
+                    <Logo />
 
                     <Box component="nav" aria-label="Navegação principal" sx={{ display: 'flex', gap: 0.5 }}>
                         {navLinks.map((link) => (
