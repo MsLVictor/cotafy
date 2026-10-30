@@ -1,78 +1,86 @@
-# React + TypeScript + Vite
+# Cotafy
 
-# cotafy
-trabalho para cadeira de front end avançado.
+Aplicação web para acompanhar cotações de moedas e criptomoedas em tempo real, ver o histórico de cada moeda e converter valores.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto da 2ª avaliação da disciplina **Tecnologia para Frontend Avançado**.
 
-Currently, two official plugins are available:
+## Integrantes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| Nome completo | GitHub | Responsável por |
+|---|---|---|
+| Victor Melquiades Leite | MsLVictor | Home + Loading/Erro e suporte para outras tarefas. |
+| Alexandre Chaves Martins | acmartins714 | Cotações + `services/api.ts` |
+| Luana Patrícia Gomes da Silva | luanapatriciasilva | Detalhes da moeda  |
+| Hrasam | | Conversor + `CurrencyCard` |
 
-## React Compiler
+## Tecnologias
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [React](https://react.dev) + [TypeScript](https://www.typescriptlang.org), com [Vite](https://vite.dev)
+- [MUI (Material UI)](https://mui.com): biblioteca de componentes
+- [React Router](https://reactrouter.com): rotas
+- [AwesomeAPI de moedas](https://docs.awesomeapi.com.br/api-de-moedas): API externa (gratuita, sem chave)
 
-## Expanding the ESLint configuration
+## Como rodar
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Pré-requisito: [Node.js](https://nodejs.org) 20 ou superior.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Abra o endereço que aparecer no terminal (normalmente http://localhost:5173).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm run build` | Verifica os tipos e gera a versão de produção em `dist/` |
+| `npm run preview` | Serve a versão gerada pelo build |
+| `npm run lint` | Procura problemas no código |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Telas e rotas
+
+| Rota | Tela |
+|---|---|
+| `/` | Home |
+| `/cotacoes` | Lista de cotações |
+| `/moeda/:codigo` | Detalhes de uma moeda (ex.: `/moeda/USD`) |
+| `/conversor` | Conversor de moedas |
+| qualquer outra | Página 404 |
+
+## Estrutura de pastas
 
 ```
+src/
+├── components/
+│   ├── common/      # componentes reutilizáveis (PageContainer, Loading, Erro, CurrencyCard...)
+│   └── layout/      # Navbar, Footer, Logo e links do menu
+├── hooks/           # hooks personalizados (se o grupo criar)
+├── layouts/         # MainLayout: Navbar + página atual + Footer
+├── pages/           # uma página por rota
+├── services/        # chamadas à API
+├── theme/           # tema do MUI (cores, fontes, espaçamentos)
+├── types/           # tipos TypeScript (respostas da API etc.)
+├── App.tsx          # definição das rotas
+└── main.tsx         # ponto de entrada: tema, CSS base e roteador
+```
+
+## Fluxo de trabalho (Git)
+
+Cada integrante trabalha na própria branch e abre um Pull Request para a `main`:
+
+```bash
+git switch main
+git pull
+git switch feat/nome-sobrenome    # 1ª vez: git switch -c feat/nome-sobrenome
+git merge main                    # traz para a sua branch o que já entrou na main
+# ... faz as alterações ...
+git add .
+git commit -m "feat/nome-sobrenome: descrição do que foi feito"
+git push -u origin feat/nome-sobrenome
+```
+
+Depois, abra o Pull Request no GitHub e escreva `Closes #N` na descrição (N = número da issue).
+
+lembrando de assinar o próprio pr e designar algum outro integrante do projeto, para realizar a aprovação, NÃO FAÇA MERGE NA MAIN SEM CONFIRMAÇÃO DE OUTRO MEMBRO DO GRUPO.
+
