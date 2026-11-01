@@ -13,6 +13,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
+import MoedaNaoEncontrada from "../components/MoedaNaoEncontrada";
 
 type Cotacao = {
   code: string;
@@ -61,7 +62,7 @@ function CurrencyDetailsPage() {
   }
 
   if (status === "nao-encontrada") {
-    return <Typography>Moeda {codigoMaiusculo} não encontrada.</Typography>;
+    return <MoedaNaoEncontrada codigo={codigoMaiusculo} />;
   }
 
   if (status === "erro" || !cotacao) {
