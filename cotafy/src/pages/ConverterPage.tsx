@@ -1,7 +1,12 @@
 import { Typography } from "@mui/material";
+import PageContainer from "../components/common/PageContainer";
 
 function ConverterPage(){
-    return <Typography variant="h1">Página para converter moeda</Typography>
+    return (
+        <PageContainer title="Tela de conversão" subtitle="...">
+            <Typography color="text.secondary">EM CONSTRUÇÃO</Typography>
+        </PageContainer>
+    )
 }
 
 export default ConverterPage

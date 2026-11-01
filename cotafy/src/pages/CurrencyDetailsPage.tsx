@@ -1,7 +1,12 @@
 import { Typography } from "@mui/material";
+import PageContainer from "../components/common/PageContainer";
 
 function CurrencyDetailsPage(){
-    return <Typography variant="h1">Detalhes da moeda escolhida</Typography>
+    return (
+        <PageContainer title="Detalhes da moeda." subtitle="">
+            <Typography color="text.secondary">Detalhes da moeda escolhida</Typography>
+        </PageContainer>
+    )
 }
 
 export default CurrencyDetailsPage
