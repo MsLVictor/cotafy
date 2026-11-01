@@ -1,4 +1,13 @@
-import { Button, Chip, Container, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Container,
+  Stack,
+  Typography,
+} from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -62,6 +71,13 @@ function CurrencyDetailsPage() {
   const variacao = Number(cotacao.pctChange);
   const positiva = variacao >= 0;
 
+  const cartas = [
+    { rotulo: "Compra", valor: cotacao.bid },
+    { rotulo: "Venda", valor: cotacao.ask },
+    { rotulo: "Máxima", valor: cotacao.high },
+    { rotulo: "Mínima", valor: cotacao.low },
+  ];
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Button
@@ -117,6 +133,33 @@ function CurrencyDetailsPage() {
           </Typography>
         </Stack>
       </Stack>
+
+      <Box
+        sx={{
+          display: "grid",
+          gap: 2,
+          mt: 4,
+          gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
+        }}
+      >
+        {cartas.map((carta) => (
+          <Card key={carta.rotulo}>
+            <CardContent>
+              <Typography variant="body2" color="text.secondary">
+                {carta.rotulo}
+              </Typography>
+              <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                {Number(carta.valor).toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 4,
+                })}
+              </Typography>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
     </Container>
   );
 }
