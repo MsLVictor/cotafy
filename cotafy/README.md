@@ -11,7 +11,7 @@ Projeto da 2ª avaliação da disciplina **Tecnologia para Frontend Avançado**.
 | Victor Melquiades Leite | MsLVictor | Home + Loading/Erro e suporte para outras tarefas. |
 | Alexandre Chaves Martins | acmartins714 | Cotações + `services/api.ts` |
 | Luana Patrícia Gomes da Silva | luanapatriciasilva | Detalhes da moeda  |
-| Hrasam | | Conversor + `CurrencyCard` |
+| Hrasam Hussem Gomes Monteiro | hrasam01 | Conversor + `CurrencyCard` |
 
 ## Tecnologias
 
