@@ -1,6 +1,7 @@
-import { Typography } from "@mui/material";
+import { Button, Chip, Container, Stack, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 
 type Cotacao = {
   code: string;
@@ -57,9 +58,28 @@ function CurrencyDetailsPage() {
   }
 
   return (
-    <Typography variant="h2">
-      {cotacao.code}/{cotacao.codein}: R$ {cotacao.bid}
-    </Typography>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Button
+        component={RouterLink}
+        to="/cotacoes"
+        startIcon={<ArrowBackIcon />}
+        sx={{ mb: 3 }}
+      >
+        Voltar às cotações
+      </Button>
+
+      <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+        <Chip label={cotacao.code} color="primary" sx={{ fontWeight: 800 }} />
+        <div>
+          <Typography variant="h2" component="h1">
+            {cotacao.name.split("/")[0]}
+          </Typography>
+          <Typography color="text.secondary">
+            {cotacao.code}/{cotacao.codein}
+          </Typography>
+        </div>
+      </Stack>
+    </Container>
   );
 }
 
