@@ -13,7 +13,10 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
-import MoedaNaoEncontrada from "../components/MoedaNaoEncontrada";
+import MoedaNaoEncontrada from "../components/common/MoedaNaoEncontrada";
+import HistoryTable, {
+  type ItemHistorico,
+} from "../components/common/HistoryTable";
 
 type Cotacao = {
   code: string;
@@ -33,6 +36,7 @@ function CurrencyDetailsPage() {
   const codigoMaiusculo = codigo.toUpperCase();
   const [cotacao, setCotacao] = useState<Cotacao | null>(null);
   const [status, setStatus] = useState<Status>("carregando");
+  const [historico, setHistorico] = useState<ItemHistorico[]>([]);
 
   useEffect(() => {
     async function buscar() {
@@ -48,6 +52,13 @@ function CurrencyDetailsPage() {
 
         const dados = await resposta.json();
         setCotacao(dados[`${codigoMaiusculo}BRL`]);
+
+        // TODO: trocar por getHistory(codigoMaiusculo, 7) do services/api.ts
+        const respostaHistorico = await fetch(
+          `https://economia.awesomeapi.com.br/json/daily/${codigoMaiusculo}-BRL/7`,
+        );
+        setHistorico(await respostaHistorico.json());
+
         setStatus("ok");
       } catch {
         setStatus("erro");
@@ -161,6 +172,11 @@ function CurrencyDetailsPage() {
           </Card>
         ))}
       </Box>
+
+      <Typography variant="h5" component="h2" sx={{ mt: 5, mb: 2 }}>
+        Últimos 7 dias
+      </Typography>
+      <HistoryTable itens={historico} />
     </Container>
   );
 }
