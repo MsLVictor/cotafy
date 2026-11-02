@@ -4,7 +4,13 @@ const BASE_URL = "https://economia.awesomeapi.com.br/json";
 
 // Faz o GET e lança erro com a mensagem da API quando a resposta não é ok (ex.: 404 CoinNotExists)
 async function request<T>(path: string): Promise<T> {
-    const response = await fetch(`${BASE_URL}${path}`);
+    let response: Response;
+    try {
+        response = await fetch(`${BASE_URL}${path}`);
+    } catch {
+        // fetch só rejeita quando não há resposta nenhuma (sem internet, API fora do ar)
+        throw new Error("Não foi possível conectar à API de cotações. Verifique sua internet.");
+    }
 
     if (!response.ok) {
         const body = (await response.json().catch(() => null)) as ApiErrorResponse | null;
