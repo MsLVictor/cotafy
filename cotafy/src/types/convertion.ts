@@ -1,5 +1,5 @@
 export const Convertion = {
-USDBRL: "Dólar Americano/Real Brasileiro",
+"USD-BRL": "Dólar Americano/Real Brasileiro",
 "USD-BRLT": "Dólar Americano/Real Brasileiro Turismo",
 "CAD-BRL": "Dólar Canadense/Real Brasileiro",
 "EUR-BRL": "Euro/Real Brasileiro",
@@ -540,8 +540,6 @@ USDBRL: "Dólar Americano/Real Brasileiro",
 "NOK-SEK": "Coroa Norueguesa/Coroa Sueca",
 "SEK-NOK": "Coroa Sueca/Coroa Norueguesa",
 } as const;
-
-
 
 // Exporta o tipo baseado nos valores textuais ("Dólar Americano/Real Brasileiro", "Dólar Americano/Real Brasileiro Turismo", etc.)
 export type CodigoDaConvercao = keyof typeof Convertion;
