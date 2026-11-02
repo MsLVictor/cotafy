@@ -4,7 +4,7 @@ import PageContainer from "../components/common/PageContainer";
 function ConverterPage(){
     return (
         <PageContainer title="Tela de conversão" subtitle="...">
-            <Typography color="text.secondary">EM CONSTRUÇÃO</Typography>
+            <Typography color="textSecondary">EM CONSTRUÇÃO</Typography>
         </PageContainer>
     )
 }
