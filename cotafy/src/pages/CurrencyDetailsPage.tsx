@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   Chip,
-  Container,
   Stack,
   Typography,
 } from "@mui/material";
@@ -13,10 +12,13 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
-import MoedaNaoEncontrada from "../components/common/MoedaNaoEncontrada";
+import ErrorMessage from "../components/common/ErrorMessage";
 import HistoryTable, {
   type ItemHistorico,
 } from "../components/common/HistoryTable";
+import Loading from "../components/common/Loading";
+import MoedaNaoEncontrada from "../components/common/MoedaNaoEncontrada";
+import PageContainer from "../components/common/PageContainer";
 
 type Cotacao = {
   code: string;
@@ -37,10 +39,12 @@ function CurrencyDetailsPage() {
   const [cotacao, setCotacao] = useState<Cotacao | null>(null);
   const [status, setStatus] = useState<Status>("carregando");
   const [historico, setHistorico] = useState<ItemHistorico[]>([]);
+  const [tentativa, setTentativa] = useState(0);
 
   useEffect(() => {
     async function buscar() {
       try {
+        // TODO: trocar por getQuotes([codigoMaiusculo]) do services/api.ts (#10)
         const resposta = await fetch(
           `https://economia.awesomeapi.com.br/json/last/${codigoMaiusculo}-BRL`,
         );
@@ -53,7 +57,7 @@ function CurrencyDetailsPage() {
         const dados = await resposta.json();
         setCotacao(dados[`${codigoMaiusculo}BRL`]);
 
-        // TODO: trocar por getHistory(codigoMaiusculo, 7) do services/api.ts
+        // TODO: trocar por getHistory(codigoMaiusculo, 7) do services/api.ts (#10)
         const respostaHistorico = await fetch(
           `https://economia.awesomeapi.com.br/json/daily/${codigoMaiusculo}-BRL/7`,
         );
@@ -66,10 +70,19 @@ function CurrencyDetailsPage() {
     }
 
     buscar();
-  }, [codigoMaiusculo]);
+  }, [codigoMaiusculo, tentativa]);
+
+  function tentarNovamente() {
+    setStatus("carregando");
+    setTentativa((t) => t + 1);
+  }
 
   if (status === "carregando") {
-    return <Typography>Carregando...</Typography>;
+    return (
+      <PageContainer>
+        <Loading />
+      </PageContainer>
+    );
   }
 
   if (status === "nao-encontrada") {
@@ -77,7 +90,14 @@ function CurrencyDetailsPage() {
   }
 
   if (status === "erro" || !cotacao) {
-    return <Typography>Não foi possível carregar a cotação.</Typography>;
+    return (
+      <PageContainer>
+        <ErrorMessage
+          message="Não foi possível carregar a cotação. Verifique sua conexão e tente novamente."
+          onRetry={tentarNovamente}
+        />
+      </PageContainer>
+    );
   }
 
   const variacao = Number(cotacao.pctChange);
@@ -91,7 +111,7 @@ function CurrencyDetailsPage() {
   ];
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <PageContainer>
       <Button
         component={RouterLink}
         to="/cotacoes"
@@ -177,7 +197,7 @@ function CurrencyDetailsPage() {
         Últimos 7 dias
       </Typography>
       <HistoryTable itens={historico} />
-    </Container>
+    </PageContainer>
   );
 }
 
