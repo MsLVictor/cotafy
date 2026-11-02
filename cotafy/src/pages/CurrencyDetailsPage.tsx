@@ -13,6 +13,7 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import ErrorMessage from "../components/common/ErrorMessage";
+import HistoryChart from "../components/common/HistoryChart";
 import HistoryTable, {
   type ItemHistorico,
 } from "../components/common/HistoryTable";
@@ -197,6 +198,11 @@ function CurrencyDetailsPage() {
         Últimos 7 dias
       </Typography>
       <HistoryTable itens={historico} />
+
+      <Typography variant="h5" component="h2" sx={{ mt: 5, mb: 2 }}>
+        Evolução da compra
+      </Typography>
+      <HistoryChart itens={historico} />
     </PageContainer>
   );
 }
