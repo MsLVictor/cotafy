@@ -16,7 +16,7 @@ function PageContainer({ title, subtitle, children }: PageContainerProps) {
                         {title}
                     </Typography>
                     {subtitle && (
-                        <Typography color="text.secondary" sx={{ mt: 1 }}>
+                        <Typography color="textSecondary" sx={{ mt: 1 }}>
                             {subtitle}
                         </Typography>
                     )}

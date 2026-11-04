@@ -13,7 +13,7 @@ function NotFoundPage() {
                     Página não encontrada
 
                 </Typography>
-                <Typography color="text.secondary" sx={{ mt: 1, mb: 4 }}>
+                <Typography color="textSecondary" sx={{ mt: 1, mb: 4 }}>
                     O endereço que você tentou acessar não existe ou foi removido.
                 </Typography>
 
