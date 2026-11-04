@@ -9,7 +9,7 @@ function Loading({message = 'Carregando...'}: LoadingProps) {
     return (
         <Box role="status" sx={{ py: 6, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2}}>
             <CircularProgress />
-            <Typography color="text.secondary">{message}</Typography>
+            <Typography color="textSecondary">{message}</Typography>
         </Box>
     )
 }
