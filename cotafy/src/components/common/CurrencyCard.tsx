@@ -18,10 +18,13 @@ type CurrencyCardProps = {
   to?: string;
 };
 
-const formatter = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-});
+function formatBRL(value: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    maximumFractionDigits: value < 1 ? 4 : 2,
+  }).format(value);
+}
 
 function CurrencyCard({ code, name, value, pctChange, to }: CurrencyCardProps) {
   const positive = pctChange >= 0;
@@ -58,7 +61,7 @@ function CurrencyCard({ code, name, value, pctChange, to }: CurrencyCardProps) {
         }}
       >
         <Typography variant="h5" component="p" sx={{ fontWeight: 800 }}>
-          {formatter.format(value)}
+            {formatBRL(value)}
         </Typography>
 
         <Stack
@@ -77,7 +80,7 @@ function CurrencyCard({ code, name, value, pctChange, to }: CurrencyCardProps) {
           <Typography sx={{ fontWeight: 700 }}>
             {pctChange.toLocaleString("pt-BR", {
               minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+              maximumFractionDigits: 4,
             })}
             %
           </Typography>
