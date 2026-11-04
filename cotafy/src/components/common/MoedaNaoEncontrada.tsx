@@ -11,7 +11,7 @@ function MoedaNaoEncontrada({ codigo }: MoedaNaoEncontradaProps) {
       <Typography variant="h2" component="h1" sx={{ mb: 2 }}>
         Moeda não encontrada
       </Typography>
-      <Typography color="text.secondary" sx={{ mb: 4 }}>
+      <Typography color="textSecondary" sx={{ mb: 4 }}>
         Não encontramos nenhuma moeda com o código "{codigo}". Confira se o
         código está correto e tente novamente.
       </Typography>
