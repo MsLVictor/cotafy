@@ -17,7 +17,6 @@ function MainLayout() {
             <Box component="main" sx={{ flexGrow: 1 }}>
                 <Outlet />
             </Box>
-
             <Footer />
         </Box>
     )
