@@ -14,58 +14,41 @@ import { useEffect, useState } from "react";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import ErrorMessage from "../components/common/ErrorMessage";
 import HistoryChart from "../components/common/HistoryChart";
-import HistoryTable, {
-  type ItemHistorico,
-} from "../components/common/HistoryTable";
+import HistoryTable from "../components/common/HistoryTable";
 import Loading from "../components/common/Loading";
 import MoedaNaoEncontrada from "../components/common/MoedaNaoEncontrada";
 import PageContainer from "../components/common/PageContainer";
+import { getHistory, getQuotes } from "../services/api";
+import type { HistoryItem, Quote } from "../types/type";
 
-type Cotacao = {
-  code: string;
-  codein: string;
-  name: string;
-  high: string;
-  low: string;
-  pctChange: string;
-  bid: string;
-  ask: string;
-};
 
 type Status = "carregando" | "ok" | "nao-encontrada" | "erro";
 
 function CurrencyDetailsPage() {
   const { codigo = "" } = useParams();
   const codigoMaiusculo = codigo.toUpperCase();
-  const [cotacao, setCotacao] = useState<Cotacao | null>(null);
+  const [cotacao, setCotacao] = useState<Quote | null>(null);
+  const [historico, setHistorico] = useState<HistoryItem[]>([]);
   const [status, setStatus] = useState<Status>("carregando");
-  const [historico, setHistorico] = useState<ItemHistorico[]>([]);
   const [tentativa, setTentativa] = useState(0);
 
   useEffect(() => {
     async function buscar() {
       try {
-        // TODO: trocar por getQuotes([codigoMaiusculo]) do services/api.ts (#10)
-        const resposta = await fetch(
-          `https://economia.awesomeapi.com.br/json/last/${codigoMaiusculo}-BRL`,
-        );
-
-        if (resposta.status === 404) {
+        const [cotacaoApi] = await getQuotes([`${codigoMaiusculo}-BRL`]);
+        setCotacao(cotacaoApi);
+        setHistorico(await getHistory(`${codigoMaiusculo}-BRL`, 7));
+        setStatus("ok");
+      } catch (erro) {
+        const mensagem = erro instanceof Error ? erro.message : "";
+        const naoAchou =
+          mensagem.toLowerCase().includes("não encontrada") ||
+          mensagem.toLowerCase().includes("nao encontrada") ||
+          mensagem.toLowerCase().includes("coinnotexists");
+        if (naoAchou) {
           setStatus("nao-encontrada");
           return;
         }
-
-        const dados = await resposta.json();
-        setCotacao(dados[`${codigoMaiusculo}BRL`]);
-
-        // TODO: trocar por getHistory(codigoMaiusculo, 7) do services/api.ts (#10)
-        const respostaHistorico = await fetch(
-          `https://economia.awesomeapi.com.br/json/daily/${codigoMaiusculo}-BRL/7`,
-        );
-        setHistorico(await respostaHistorico.json());
-
-        setStatus("ok");
-      } catch {
         setStatus("erro");
       }
     }
@@ -128,7 +111,7 @@ function CurrencyDetailsPage() {
           <Typography variant="h2" component="h1">
             {cotacao.name.split("/")[0]}
           </Typography>
-          <Typography color="text.secondary">
+          <Typography color="textSecondary">
             {cotacao.code}/{cotacao.codein}
           </Typography>
         </div>
@@ -178,7 +161,7 @@ function CurrencyDetailsPage() {
         {cartas.map((carta) => (
           <Card key={carta.rotulo}>
             <CardContent>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="textSecondary">
                 {carta.rotulo}
               </Typography>
               <Typography variant="h6" sx={{ fontWeight: 700 }}>
