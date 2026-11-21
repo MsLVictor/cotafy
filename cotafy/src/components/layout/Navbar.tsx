@@ -33,7 +33,7 @@ function Navbar() {
                     </IconButton>
                 </Toolbar>
             </Container>
-            <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
+            <Drawer anchor="right" open={open} onClose={() => setOpen(false)} ModalProps={{ disableRestoreFocus: true}}>
                 <Box sx={{ width: 260, p: 2 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2}}>
                         <Logo />
