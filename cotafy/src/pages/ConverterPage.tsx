@@ -53,18 +53,20 @@ function validarValor(texto: string): { valor: number | null; erro: string } {
 }
 
 function formatarMoeda(valor: number, moeda: string) {
+    const opcoes =
+        Math.abs(valor) < 1 && valor !== 0
+            ? { maximumSignificantDigits: 4 }
+            : { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+
     if (moeda === "BRL") {
         return valor.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 4,
+            ...opcoes,
         })
     }
-    return `${valor.toLocaleString("pt-BR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 4,
-    })} ${moeda}`
+
+    return `${valor.toLocaleString("pt-BR", opcoes)} ${moeda}`
 }
 
 function ConverterPage(){
@@ -85,9 +87,22 @@ function ConverterPage(){
 
         let ignore = false
 
-        getQuotes([`${de}-${para}`])
-            .then(([resultado]) => {
-                if (!ignore) setCotacao({ chave, taxa: Number(resultado.bid), erro: "" })
+        const pares = [de, para]
+            .filter((moeda) => moeda !== "BRL")
+            .map((moeda) => `${moeda}-BRL`)
+
+        getQuotes(pares)
+            .then((cotacoes) => {
+                if (ignore) return
+
+                const emReais = (moeda: Moeda) =>
+                    moeda === "BRL"
+                        ? 1
+                        : Number(cotacoes[pares.indexOf(`${moeda}-BRL`)].bid)
+
+                const taxa = emReais(de) / emReais(para)
+
+                setCotacao({ chave, taxa, erro: "" })
             })
             .catch((err: Error) => {
                 if (!ignore) setCotacao({ chave, taxa: null, erro: err.message })
@@ -193,14 +208,14 @@ function ConverterPage(){
                                 </TextField>
                             </Stack>
 
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography variant="caption" color="textSecondary">
                                 {INFO_MOEDA[de].nome} → {INFO_MOEDA[para].nome}
                             </Typography>
 
                             <Box>
                                 <Typography
                                     variant="caption"
-                                    color="text.secondary"
+                                    color="textSecondary"
                                     sx={{ display: "block", mb: 1 }}
                                 >
                                     Valores rápidos
@@ -239,7 +254,7 @@ function ConverterPage(){
                                 "linear-gradient(160deg, rgba(45, 212, 191, 0.14), rgba(19, 28, 46, 0.35) 60%)",
                         }}
                     >
-                        <Typography variant="overline" color="text.secondary">
+                        <Typography variant="overline" color="textSecondary">
                             Resultado
                         </Typography>
 
@@ -263,7 +278,7 @@ function ConverterPage(){
                                     </Typography>
                                 </Grow>
 
-                                {valorNumerico !== null && taxa !== null && (
+                                {taxa !== null && (
                                     <Chip
                                         label={`1 ${de} = ${formatarMoeda(taxa, para)}`}
                                         variant="outlined"
