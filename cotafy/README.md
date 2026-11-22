@@ -4,6 +4,9 @@ Aplicação web para acompanhar cotações de moedas e criptomoedas em tempo rea
 
 Projeto da 2ª avaliação da disciplina **Tecnologia para Frontend Avançado**.
 
+- 🔗 **Site publicado:** https://cotafy-wine.vercel.app/
+- 🔗 **Espelho:** https://casa797.ddns.net/
+
 ## Integrantes
 
 | Nome completo | GitHub | Responsável por |
