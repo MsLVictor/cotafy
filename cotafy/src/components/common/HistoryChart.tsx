@@ -7,7 +7,6 @@ type HistoryChartProps = {
 };
 
 function HistoryChart({ itens }: HistoryChartProps) {
-  // a API devolve do mais recente para o mais antigo; o gráfico lê da esquerda para a direita
   const ordenados = [...itens].reverse();
 
   const datas = ordenados.map((item) =>
@@ -18,12 +17,24 @@ function HistoryChart({ itens }: HistoryChartProps) {
   );
   const valores = ordenados.map((item) => Number(item.bid));
 
+  function formatarValor(valor: number) {
+    return valor.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 5,
+      roundingMode: "ceil",
+    });
+  }
+
   return (
     <Box sx={{ width: "100%" }}>
       <LineChart
         height={320}
         xAxis={[{ scaleType: "point", data: datas }]}
-        series={[{ data: valores, label: "Compra (R$)" }]}
+        yAxis={[{ width: 80, valueFormatter: (valor: number) => formatarValor(valor) }]}
+        series={[{ 
+          data: valores, 
+          label: "Compra (R$)",
+          valueFormatter: (valor) => (valor === null ? "" : formatarValor(valor)), }]}
       />
     </Box>
   );
