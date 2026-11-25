@@ -541,6 +541,5 @@ export const Convertion = {
 "SEK-NOK": "Coroa Sueca/Coroa Norueguesa",
 } as const;
 
-// Exporta o tipo baseado nos valores textuais ("Dólar Americano/Real Brasileiro", "Dólar Americano/Real Brasileiro Turismo", etc.)
 export type CodigoDaConvercao = keyof typeof Convertion;
 export type DescricaoDaConvercao = typeof Convertion[keyof typeof Convertion];

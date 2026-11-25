@@ -163,6 +163,5 @@ export const Currency = {
     BNB: "Binance Coin"
 } as const;
 
-// Exporta o tipo baseado nos valores textuais ("Dirham dos Emirados", "Real Brasileiro", etc.)
 export type CodigoMoeda = keyof typeof Currency;
 export type DescricaoMoeda = typeof Currency[keyof typeof Currency];

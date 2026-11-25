@@ -7,20 +7,16 @@ import ErrorMessage from "../components/common/ErrorMessage";
 import { getQuotes } from "../services/api";
 import type { Quote } from "../types/type";
 
-// Principais moedas do mundo
 const CODES = ["USD-BRL", "EUR-BRL", "GBP-BRL", "ARS-BRL", "JPY-BRL", "CAD-BRL", "BTC-BRL", "ETH-BRL", "LTC-BRL"];
 
-// Vetor para permitir a separação entre moeda convencional e crypto moedas
 const CRYPTOS = ["BTC", "ETH", "LTC"];
 
 type Category = "todas" | "moedas" | "criptos";
 
-// Minúsculas e sem acento, para "dolar" encontrar "Dólar"
 function normalize(text: string) {
     return text.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
 }
 
-// Horário em que as cotações foram buscadas; muda a cada clique em "Atualizar"
 function formatLastUpdate(date: Date) {
     return date.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "medium" });
 }
@@ -30,7 +26,6 @@ function QuotesPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
-    // Incrementado pelo "Tentar novamente" e pelo "Atualizar" para o useEffect buscar de novo
     const [attempt, setAttempt] = useState(0);
     const [search, setSearch] = useState("");
     const [category, setCategory] = useState<Category>("todas");
@@ -52,20 +47,17 @@ function QuotesPage() {
                 if (!ignore) setLoading(false);
             });
 
-        // Evita atualizar o estado se a página for fechada antes da resposta chegar
         return () => {
             ignore = true;
         };
     }, [attempt]);
 
-    // Usado pelo "Tentar novamente" e pelo "Atualizar"
     function handleReload() {
         setError("");
         setLoading(true);
         setAttempt((current) => current + 1);
     }
 
-    // Skeletons só na primeira carga; ao atualizar, os cards atuais continuam na tela
     const showSkeletons = loading && quotes.length === 0;
 
     function handleClearSearch() {
@@ -73,7 +65,6 @@ function QuotesPage() {
         setCategory("todas");
     }
 
-    // Filtragem no estado: busca e categoria aplicadas juntas, sem nova requisição
     const term = normalize(search.trim());
     const filteredQuotes = quotes.filter((quote) => {
         const isCrypto = CRYPTOS.includes(quote.code);
@@ -119,7 +110,6 @@ function QuotesPage() {
                             color="primary"
                             aria-label="Tipo de moeda"
                             value={category}
-                            // value vem null ao clicar no botão já selecionado; mantém o filtro atual
                             onChange={(_event, value: Category | null) => value && setCategory(value)}
                         >
                             <ToggleButton value="todas" sx={{ flexGrow: 1 }}>Todas</ToggleButton>
